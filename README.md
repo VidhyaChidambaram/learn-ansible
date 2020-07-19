@@ -3,7 +3,7 @@
 ## Purpose
 Document Ansible notes used for learning the framework
 
-# Ansible Overview
+## Ansible Overview
 * 1800 modules
 * Agentless (unlike puppet)
 * Simple, declarative language
@@ -55,6 +55,104 @@ This is more secure and reliable
 * Collection of hosts (Nodes) that represent a application
 * static / dynamic sources
 * groups
+
+-----------
+## Ansible Engine
+
+### Ansible Adhoc commands
+* ansible - Run ansible command from command line to execute a single ansible task from command line
+* plays - Ordered set of tasks to execute against given inventory
+* playbooks - Files containing one or more plays
+
+### Tasks
+- file: Create directory
+- yum: Install package
+- service: Start service
+- template: Render configuration file
+- get_url: Fetch archive file from url
+- git: clone source code repository
+
+#### Handlers Task
+Special tasks run at the end of the play if notified by another task when the change occurs
+- Example : When package installation is complete, service restart handler task should be run.
+- if the task update's package's configuration, notify appropriate handler
+
+### What can be done with Ansible Playbook
+- Use variables
+- apply templates
+- for loop
+- conditionals
+- apply tags
+- create blocks
+
+## Ansible Variables
+Used for managing context from :
+- Command line variables
+- Plays
+- Tasks
+- Files
+- Inventory
+- Discovered Facts
+- Roles
+
+## Variable precedence
+There is a good hierarchy resolution strategy available in case there is a same variable and it 
+needs to be overwritten.
+
+## Facts
+A set of data extracted from an ansible command to be used for the subsequent task
+For example : ansible localhost -m setup
+
+## Templates
+Ansible uses Jinja2 templating engine to dynamically
+- set and modify play vars
+- apply conditional logic
+- Generate files such as configurations from variables
+
+## Roles
+- Closely related ansible content that can be shared easily rather than plays alone.
+- Utility packages or projects grouped together
+- Path resolution and default vars
+- Readability and manage plays
+
+
+For example:
+
+```
+site.yml
+roles/
+    common/
+        files/
+        templates/
+        tasks/
+        handlers/
+        vars/
+        meta/
+        default/        
+    apache/
+        files/
+        templates/
+        tasks/
+        handlers/
+        vars/
+        meta/
+        default/
+```
+
+Example playbook using two roles:
+
+``` 
+#site.yml
+---
+- hosts: web
+  roles:
+    - common
+    - apache
+```
+
+### Ansible Galaxy
+- discover community contributed ansible roles
+- cli tool for creating and managing roles
 
 
 
