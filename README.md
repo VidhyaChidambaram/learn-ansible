@@ -43,9 +43,15 @@ containers, files, database, messaging, packaging, source control, system, testi
 
 * Command : Executes the task by connecting to the provided system and performing the action
 This is more secure and reliable
+Eg: Run a command available in ansible documentation
+
 * Script: Executes a script after transferring to the host. Be careful in using scripts.
+
 * Shell: Executes a shell command or bash script after connecting to machine
+Eg: Run a powershell script after connecting to a windows machine
+
 * Raw: Executes a raw script without taking advantage of ansible subsystem.
+Eg : Scp into a remote host
 
 ### Plugins
 
@@ -100,7 +106,7 @@ There is a good hierarchy resolution strategy available in case there is a same 
 needs to be overwritten.
 
 ## Facts
-A set of data extracted from an ansible command to be used for the subsequent task
+A set of data (factory) extracted from an ansible command to be used for the subsequent task
 For example : ansible localhost -m setup
 
 ## Templates
@@ -121,7 +127,7 @@ For example:
 ```
 site.yml
 roles/
-    common/
+    common/ => Run against all the machines
         files/
         templates/
         tasks/
@@ -137,22 +143,32 @@ roles/
         vars/
         meta/
         default/
+    webservers/ => Run against webservers hosts
+        files/
+        templates/
+        tasks/
+        handlers/
+        vars/
+        meta/
+        default/
 ```
 
-Example playbook using two roles:
+### How to call a role from a playbook?
 
 ``` 
 #site.yml
 ---
 - hosts: web
-  roles:
-    - common
+  roles: => Roles run from top to bottom, common tasks run first followed by apache tasks
+    - common 
     - apache
 ```
 
 ### Ansible Galaxy
 - discover community contributed ansible roles
 - cli tool for creating and managing roles
+
+
 
 
 

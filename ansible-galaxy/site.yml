@@ -1,0 +1,20 @@
+tasks:
+  - name: install epel repo
+    yum: name=epel-release state=present
+
+  - name: install python bindings for SELinux
+    yum: name={{item}} state=present
+    with_items:
+    - libselinux-python
+    - libsemanage-python
+
+  - name: test to see if SELinux is running
+    command: getenforce
+    register: status
+    changed_when: false
+
+  - name: install apache
+    yum: name=httpd state=present
+
+  - name: start apache
+    service: name=httpd state=started enabled=yes
